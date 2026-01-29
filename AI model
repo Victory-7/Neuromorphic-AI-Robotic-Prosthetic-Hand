@@ -1,0 +1,89 @@
+import numpy as np
+import pandas as pd
+import speech_recognition as sr
+from sklearn.preprocessing import LabelEncoder
+from sklearn.linear_model import Ridge
+
+
+print("[INFO] Loading training data...")
+
+data = pd.read_csv("train.csv")   # columns: command, signal
+
+X = data["command"]
+y = data["signal"]
+
+encoder = LabelEncoder()
+X_encoded = encoder.fit_transform(X).reshape(-1, 1)
+
+model = Ridge(alpha=1.0)
+model.fit(X_encoded, y)
+
+print("[INFO] Training complete")
+print("[INFO] Known commands:", list(encoder.classes_))
+
+
+class NeuromorphicSignalLayer:
+    def __init__(self, leak=0.9, threshold=1.0):
+        self.v = 0.0
+        self.leak = leak
+        self.threshold = threshold
+
+    def process(self, signal):
+        # Leaky integration
+        self.v = self.v * self.leak + signal * 0.01
+
+        # Spike-based modulation
+        if self.v >= self.threshold:
+            self.v = 0
+            return signal * 1.2   # spike amplification
+        return signal
+
+neuromorphic_layer = NeuromorphicSignalLayer()
+
+
+
+recognizer = sr.Recognizer()
+
+def recognize_speech():
+    with sr.Microphone() as source:
+        print("\n🎤 Speak a command...")
+        audio = recognizer.listen(source)
+
+    try:
+        text = recognizer.recognize_google(audio)
+        text = text.lower().strip()
+        print("[HEARD]:", text)
+        return text
+    except sr.UnknownValueError:
+        print("[ERROR] Could not understand audio")
+        return None
+    except sr.RequestError:
+        print("[ERROR] Speech service unavailable")
+        return None
+
+
+
+def generate_control_signal(command):
+    if command not in encoder.classes_:
+        print("[WARNING] Unknown command:", command)
+        return None
+
+    encoded = encoder.transform([command])[0]
+    base_signal = model.predict([[encoded]])[0]
+
+    final_signal = neuromorphic_layer.process(base_signal)
+
+    return int(final_signal)
+
+
+
+print("\n[INFO] Neuromorphic Speech Control System Running")
+
+while True:
+    command = recognize_speech()
+    if command is None:
+        continue
+
+    signal = generate_control_signal(command)
+    if signal is not None:
+        print("🧠 Generated Control Signal:", signal)
