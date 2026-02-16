@@ -6,7 +6,7 @@ This project presents a low cost neuromorphic-controlled prosthetic hand that us
 - The system provides: Real-time processing, Energy-efficient computation, Natural gesture simulation, Modular and upgradeable architecture.
 ## technologies Used
 - Software: Arduino IDE.
-            Embedded C/C++ for microcontroller programming.
+            Python for microcontroller programming.
             Spiking Neural Network (SNN) algorithm implementation.
             Signal preprocessing and noise filtering algorithms.
 - Hardware: Arduino Microcontroller.
