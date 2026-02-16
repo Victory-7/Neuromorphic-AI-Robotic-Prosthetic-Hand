@@ -5,14 +5,14 @@ This project presents a low cost neuromorphic-controlled prosthetic hand that us
 - We aim to develop: human-like gesture simulation, Implement neuromorphic-inspired AI and Improve control accuracy.
 - The system provides: Real-time processing, Energy-efficient computation, Natural gesture simulation, Modular and upgradeable architecture.
 ## technologies Used
-- Software: Arduino IDE.
-            Python for microcontroller programming.
-            Spiking Neural Network (SNN) algorithm implementation.
+- Software: Arduino IDE,
+            Python for microcontroller programming,
+            Spiking Neural Network (SNN) algorithm implementation,
             Signal preprocessing and noise filtering algorithms.
-- Hardware: Arduino Microcontroller.
-            Surface EMG (sEMG) Sensors.
-            Servo Motors (for fingers and wrist).
-            3D Printed Prosthetic Structure.
+- Hardware: Arduino Microcontroller,
+            Surface EMG (sEMG) Sensors,
+            Servo Motors (for fingers and wrist),
+            3D Printed Prosthetic Structure,
             Li-ion Battery Pack.
  ## Working Principle
 1. Signal Detection: When the user intends to move their hand, muscle signals (EMG signals) or control inputs are generated. These signals are captured using sensors placed on the user’s arm or through an external control interface.
