@@ -1,89 +1,206 @@
+# ==============================
+# IMPORTING REQUIRED LIBRARIES
+# ==============================
+
+# NumPy for numerical operations
 import numpy as np
+
+# Pandas for reading and handling CSV dataset
 import pandas as pd
+
+# SpeechRecognition library for converting speech to text
 import speech_recognition as sr
+
+# LabelEncoder converts text labels into numeric values (Preprocessing step)
 from sklearn.preprocessing import LabelEncoder
+
+# Ridge Regression is the MAIN Machine Learning algorithm used
+# It is a supervised regression algorithm with L2 regularization
 from sklearn.linear_model import Ridge
 
 
+# ==============================
+# LOADING TRAINING DATA
+# ==============================
+
 print("[INFO] Loading training data...")
 
-data = pd.read_csv("train.csv")   # columns: command, signal
+# Read dataset from CSV file
+# Dataset must contain:
+#   column 1: command (text)
+#   column 2: signal (numeric output)
+data = pd.read_csv("train.csv")
 
+# X = Input feature (text commands)
 X = data["command"]
+
+# y = Target output (control signals)
 y = data["signal"]
 
+
+# ==============================
+# DATA PREPROCESSING
+# ==============================
+
+# LabelEncoder is NOT an ML algorithm
+# It is a preprocessing tool used to convert text into numbers
 encoder = LabelEncoder()
+
+# Convert commands like:
+# "left" -> 0
+# "right" -> 1
+# "forward" -> 2
+# Machine learning models require numeric input
 X_encoded = encoder.fit_transform(X).reshape(-1, 1)
 
+
+# ==============================
+# MACHINE LEARNING MODEL
+# ==============================
+
+# Creating Ridge Regression model
+# Ridge is a SUPERVISED LEARNING algorithm
+# It learns mapping:
+#     Encoded Command -> Control Signal
 model = Ridge(alpha=1.0)
+
+# Training the ML model
+# This is where actual machine learning happens
+# Model learns relationship between X_encoded and y
 model.fit(X_encoded, y)
 
 print("[INFO] Training complete")
 print("[INFO] Known commands:", list(encoder.classes_))
 
 
+# =====================================================
+# NEUROMORPHIC SIGNAL LAYER (NOT MACHINE LEARNING)
+# =====================================================
+
+# This class simulates a brain-inspired spiking neuron
+# It is NOT trained
+# It is rule-based logic added after ML prediction
+
 class NeuromorphicSignalLayer:
+    
     def __init__(self, leak=0.9, threshold=1.0):
+        # Membrane voltage (internal state of neuron)
         self.v = 0.0
+        
+        # Leak factor: how fast signal decays over time
         self.leak = leak
+        
+        # Threshold: when voltage crosses this, spike occurs
         self.threshold = threshold
 
     def process(self, signal):
-        # Leaky integration
+        # Leaky integration formula:
+        # New voltage = old voltage × leak + input signal × small weight
         self.v = self.v * self.leak + signal * 0.01
 
-        # Spike-based modulation
+        # If voltage crosses threshold → neuron spikes
         if self.v >= self.threshold:
-            self.v = 0
-            return signal * 1.2   # spike amplification
+            self.v = 0  # Reset after spike
+            
+            # Amplify signal slightly during spike
+            return signal * 1.2   
+
+        # If no spike, return original signal
         return signal
 
+
+# Create neuromorphic layer object
 neuromorphic_layer = NeuromorphicSignalLayer()
 
 
+# ==============================
+# SPEECH RECOGNITION SETUP
+# ==============================
 
+# Create speech recognizer object
 recognizer = sr.Recognizer()
 
+
 def recognize_speech():
+   # This function captures audio from microphone
+    # and converts it to text using Google Speech API.
+    
+    # NOTE:
+    # This uses a pre-trained AI model externally.
+    # It is NOT trained inside this code.
+
+    
     with sr.Microphone() as source:
         print("\n🎤 Speak a command...")
         audio = recognizer.listen(source)
 
     try:
+        # Convert speech to text
         text = recognizer.recognize_google(audio)
         text = text.lower().strip()
+
         print("[HEARD]:", text)
         return text
+
     except sr.UnknownValueError:
         print("[ERROR] Could not understand audio")
         return None
+
     except sr.RequestError:
         print("[ERROR] Speech service unavailable")
         return None
 
 
+# ========================================
+# GENERATING CONTROL SIGNAL USING ML
+# ========================================
 
 def generate_control_signal(command):
+
+# This function generates final control signal.
+    
+# ML Algorithm Used Here:
+# Ridge Regression (Supervised Learning)
+
+    # If command was not seen during training
     if command not in encoder.classes_:
         print("[WARNING] Unknown command:", command)
         return None
 
+    # Convert text command to numeric using LabelEncoder
     encoded = encoder.transform([command])[0]
+
+    # ==============================
+    # MACHINE LEARNING PREDICTION
+    # ==============================
+    # Ridge Regression predicts base control signal
     base_signal = model.predict([[encoded]])[0]
 
+    # Pass predicted signal through neuromorphic layer
+    # This is rule-based modulation (not ML)
     final_signal = neuromorphic_layer.process(base_signal)
 
     return int(final_signal)
 
 
+# ==============================
+# MAIN LOOP
+# ==============================
 
 print("\n[INFO] Neuromorphic Speech Control System Running")
 
+# Infinite loop for continuous speech control
 while True:
+    
+    # Capture spoken command
     command = recognize_speech()
+    
+    # If recognition failed, skip
     if command is None:
         continue
 
+    # Generate control signal using ML model
     signal = generate_control_signal(command)
+    
     if signal is not None:
         print("🧠 Generated Control Signal:", signal)
