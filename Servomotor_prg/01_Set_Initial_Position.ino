@@ -10,8 +10,8 @@
 
 #include <Servo.h>
 
-Servo fingerServo;        // Create servo object
-const int servoPin = 5;   // GPIO connected to servo signal
+Servo fingerServo;       
+const int servoPin = 5;  
 
 void setup() {
   Serial.begin(115200);   // Start serial communication (optional debugging)
