@@ -1,6 +1,6 @@
 /*
   --------------------------------------------------------
-  Project: Prosthetic Finger Control
+  Finger Control
   File: 01_Set_Initial_Position.ino
   Board: ESP32 S3 Mini
   Servo: MG995
