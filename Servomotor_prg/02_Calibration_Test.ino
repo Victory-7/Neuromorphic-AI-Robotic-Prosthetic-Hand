@@ -1,37 +1,29 @@
-/*
-  --------------------------------------------------------
-  Finger Control
-  File: 02_Calibration_Test.ino
-  Board: ESP32 S3 Mini
-  Servo: MG995
-  Purpose: Gradually test servo angles to determine
-           finger movement limits
-  --------------------------------------------------------
-*/
-
 #include <Servo.h>
 
 Servo fingerServo;
-const int servoPin = 5;
+
+int servoPin = 5;   // Change if needed
+int angle;
 
 void setup() {
   Serial.begin(115200);
   fingerServo.attach(servoPin);
 
-  Serial.println("Starting Calibration Test...");
+  Serial.println("Servo Calibration Started");
+  Serial.println("Servo will increase by 10 degrees each step.");
 }
 
 void loop() {
 
-  for (int angle = 0; angle <= 130; angle += 5) {
+  for(angle = 0; angle <= 180; angle += 10) {
 
-    fingerServo.write(angle);
-    Serial.print("Current Angle: ");
-    Serial.println(angle);
+    fingerServo.write(angle);   // Move servo
+    Serial.print("Servo Angle: ");
+    Serial.println(angle);      // Display angle on Serial Monitor
 
-    delay(2000);  // Observe finger movement
+    delay(1500);  // Wait so you can observe finger movement
   }
 
-  Serial.println("Calibration Cycle Complete.");
-  delay(5000);  // Wait before repeating
+  Serial.println("Sweep Finished. Restarting...");
+  delay(5000);
 }
