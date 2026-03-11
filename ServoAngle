@@ -1,0 +1,8 @@
+Finger Motion Analysis vs Servo Angle
+
+| Servo Angle (°) | Finger Joint Activated    | Observed Finger Motion                              | Mechanical Interpretation                                                                                              |
+| --------------- | ------------------------- | --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| 0° – 69°        | None                      | Finger remains in the fully extended (open) position| Servo rotation does not yet generate sufficient tendon tension to overcome joint resistance.                           |
+| 70° – 100°      | Distal Joint (Finger Tip) | Tip segment begins bending gradually                | Initial tendon tension activates the distal joint due to its lower mechanical resistance.                              |
+| 100° – 110°     | Transition Region         | Tip almost fully flexed                             | Tendon force increases and begins transferring toward the next joint.                                                  |
+| 110° – 180°     | Middle Joint + Tip        | Middle segment bends and the finger fully closes    | Increased servo rotation pulls the tendon further, activating the proximal linkage and completing the grasping motion. |
