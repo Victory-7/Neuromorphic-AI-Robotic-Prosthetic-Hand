@@ -1,0 +1,48 @@
+                +-------------------+
+                |   ESP32-S3 DevKit |
+                |                   |
+ GPIO4 ---------|-------------------|---- Servo 1 Signal
+ GPIO5 ---------|-------------------|---- Servo 2 Signal
+ GPIO6 ---------|-------------------|---- Servo 3 Signal
+ GPIO7 ---------|-------------------|---- Servo 4 Signal
+                |                   |
+ GND -----------|-------------------|---- Breadboard GND Rail
+                +-------------------+
+
+                         |
+                         |
+                  -----------------
+                  |   Breadboard  |
+                  |               |
+ Battery + -------| + Power Rail  |------ Servo 1 VCC
+                  |               |------ Servo 2 VCC
+                  |               |------ Servo 3 VCC
+                  |               |------ Servo 4 VCC
+                  |               |
+ Battery - -------| - Power Rail  |------ Servo 1 GND
+                  |               |------ Servo 2 GND
+                  |               |------ Servo 3 GND
+                  |               |------ Servo 4 GND
+                  -----------------
+
+Servo Connections (MG995):
+
+Servo 1
+Red   → Breadboard + rail
+Brown → Breadboard - rail
+Orange → GPIO4
+
+Servo 2
+Red   → Breadboard + rail
+Brown → Breadboard - rail
+Orange → GPIO5
+
+Servo 3
+Red   → Breadboard + rail
+Brown → Breadboard - rail
+Orange → GPIO6
+
+Servo 4
+Red   → Breadboard + rail
+Brown → Breadboard - rail
+Orange → GPIO7
