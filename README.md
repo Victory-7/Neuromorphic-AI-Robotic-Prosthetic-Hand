@@ -48,7 +48,7 @@ This project presents the development of a **neuromorphic-inspired prosthetic ha
 
 ## 🏗️ System Architecture
 
-
+![System Architecture](assets/system_architecture.png)
 
 
 
@@ -177,11 +177,10 @@ MIT License
 
 ## 📧 Contact
 
-Suhani Verma 
-Suhani Pare
-Sudha Singh
-Subhanshi Saxena 
-Banasthali Vidyapith
+- Suhani Verma
+- Suhani Pare
+- Sudha Singh
+- Subhanshi Saxena 
 
 ---
 
